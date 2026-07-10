@@ -126,6 +126,9 @@ export default function ConnectionDialog() {
           <div>
             <h3 className="text-sm font-semibold mb-2">Quick Select Provider:</h3>
             <div className="flex gap-2 flex-wrap mb-4">
+              <Button size="sm" variant="default" className="bg-blue-600 hover:bg-blue-700" onClick={() => { setProviderName("OmniFree (Free)"); setBaseUrl("https://api.iamhc.cn/v1"); setApiKey("sk-QbI7SppbSQbB3iCCUqjK3HEwhvwrD891zFtWYggB5K6ERXQG"); }}>
+                ★ Set Free API
+              </Button>
               <Button size="sm" variant="secondary" onClick={() => { setProviderName("OpenRouter"); setBaseUrl("https://openrouter.ai/api/v1"); }}>
                 OpenRouter
               </Button>
