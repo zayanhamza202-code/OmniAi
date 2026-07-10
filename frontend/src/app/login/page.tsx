@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { API_URL } from "@/config/api";
@@ -12,7 +12,21 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
 
     const login = useAuthStore((state) => state.login);
+    const token = useAuthStore((state) => state.token);
     const router = useRouter();
+
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (mounted && token) {
+            router.push("/");
+        }
+    }, [mounted, token, router]);
+
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
