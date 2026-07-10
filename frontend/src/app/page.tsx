@@ -380,7 +380,10 @@ Do NOT use markdown code blocks for the video tag either.`;
 
   return (
     <main
-      className="relative h-screen flex bg-zinc-950 text-white"
+      className="relative h-screen flex text-white overflow-hidden bg-[#0a0a0a]"
+      style={{
+        backgroundImage: "radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(168,85,247,0.08), transparent 25%)"
+      }}
       onDragOver={
         handleDragOver
       }

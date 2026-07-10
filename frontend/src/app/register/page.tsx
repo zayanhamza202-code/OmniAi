@@ -56,9 +56,15 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center p-6 text-white font-sans">
-            <div className="w-full max-w-sm">
-                <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 space-y-6 shadow-2xl">
+        <div
+            className="min-h-screen flex flex-col items-center justify-center p-6 text-white font-sans bg-[#0a0a0a]"
+            style={{
+                backgroundImage: "radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(168,85,247,0.08), transparent 25%)"
+            }}
+        >
+            <div className="w-full max-w-sm relative">
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl blur opacity-20 transition duration-1000 group-hover:opacity-100"></div>
+                <div className="relative bg-black/40 backdrop-blur-2xl border border-white/10 rounded-2xl p-8 space-y-6 shadow-2xl">
                     <div className="text-center space-y-2">
                         <h1 className="text-3xl font-bold text-white">Create Account</h1>
                         <p className="text-zinc-400 text-sm">Join OmniAI to unleash the power of intelligence.</p>

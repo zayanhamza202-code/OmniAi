@@ -111,7 +111,7 @@ ${file.text}
   }
 
   return (
-    <div className="border-t border-zinc-800 bg-zinc-950 p-4">
+    <div className="border-t border-white/10 bg-black/40 backdrop-blur-2xl p-4 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] z-20">
       {files.length > 0 && (
         <div className="mb-4 flex flex-wrap gap-3">
           {files.map((file, index) => (
@@ -181,8 +181,8 @@ ${file.text}
           disabled={isStreaming}
           onClick={onWebSearchToggle}
           className={`transition-all ${webSearchEnabled
-              ? "bg-blue-600 hover:bg-blue-700 shadow-[0_0_12px_rgba(59,130,246,0.5)]"
-              : ""
+            ? "bg-blue-600 hover:bg-blue-700 shadow-[0_0_12px_rgba(59,130,246,0.5)]"
+            : ""
             }`}
           title={webSearchEnabled ? "Web search ON" : "Web search OFF"}
         >

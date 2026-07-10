@@ -21,9 +21,8 @@ export default function ChatSidebar() {
   const { setAgentDialogOpen } = useAgentStore();
 
   return (
-    <aside className="w-72 border-r border-zinc-800 bg-zinc-900 flex flex-col">
-
-      <div className="p-4 border-b border-zinc-800 space-y-2">
+    <aside className="w-72 border-r border-white/5 bg-black/40 backdrop-blur-xl flex flex-col shadow-2xl z-10">
+      <div className="p-4 border-b border-white/5 space-y-3">
 
         <button
           onClick={createChat}

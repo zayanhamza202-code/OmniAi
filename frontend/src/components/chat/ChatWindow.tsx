@@ -90,9 +90,9 @@ export default function ChatWindow({
         return (
           <div
             key={index}
-            className={`group relative max-w-[85%] rounded-xl p-4 ${message.role === "user"
-              ? "ml-auto bg-blue-600 text-white"
-              : "bg-zinc-800 text-white"
+            className={`group relative max-w-[85%] rounded-2xl p-5 shadow-lg backdrop-blur-md ${message.role === "user"
+              ? "ml-auto bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-[0_4px_20px_rgba(99,102,241,0.25)] border border-indigo-400/30"
+              : "bg-white/5 text-zinc-100 border border-white/10"
               }`}
           >
             {message.images && message.images.length > 0 && (
