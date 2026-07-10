@@ -41,11 +41,17 @@ export default function Home() {
   const { token, logout, username } = useAuthStore();
   const router = useRouter();
 
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
-    if (!token) {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted && !token) {
       router.push("/login");
     }
-  }, [token, router]);
+  }, [mounted, token, router]);
 
   const currentChat = chats.find(
     (c) => c.id === currentChatId
@@ -370,7 +376,7 @@ Do NOT use markdown code blocks for the video tag either.`;
     );
   }
 
-  if (!token) return null;
+  if (!mounted || !token) return null;
 
   return (
     <main
