@@ -179,6 +179,14 @@ export default function ConnectionDialog() {
             }
           />
 
+          <Input
+            placeholder="Model ID (e.g., gpt-4o or gemini-pro)"
+            value={model}
+            onChange={(e) =>
+              setModel(e.target.value)
+            }
+          />
+
           <Button
             variant="outline"
             disabled={loadingModels}
