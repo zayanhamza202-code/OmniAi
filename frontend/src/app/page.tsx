@@ -67,6 +67,8 @@ export default function Home() {
   const [isStreaming, setIsStreaming] =
     useState(false);
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const [dragging, setDragging] =
     useState(false);
 
@@ -400,7 +402,24 @@ Do NOT use markdown code blocks for the video tag either.`;
       <MemoryDialog />
       <AgentDialog />
 
-      <ChatSidebar />
+      <button
+        className="md:hidden absolute top-3 left-4 z-50 p-2 bg-black/40 backdrop-blur-xl border border-white/10 rounded-lg text-white"
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+      >
+        <svg fill="currentColor" viewBox="0 0 20 20" className="w-5 h-5"><path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path></svg>
+      </button>
+
+      {/* Overlay for mobile */}
+      {isSidebarOpen && (
+        <div
+          className="md:hidden fixed inset-0 bg-black/60 z-30 backdrop-blur-sm"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      <div className={`fixed inset-y-0 left-0 z-40 transform transition-transform duration-300 md:relative md:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+        <ChatSidebar />
+      </div>
 
       <div className="flex flex-1 min-w-0">
         <div className="flex flex-1 flex-col min-w-0">
@@ -415,12 +434,8 @@ Do NOT use markdown code blocks for the video tag either.`;
 
           <ChatInput
             onSend={handleSend}
-            isStreaming={
-              isStreaming
-            }
-            onStop={
-              stopGenerating
-            }
+            isStreaming={isStreaming}
+            onStop={stopGenerating}
             files={files}
             upload={upload}
             remove={remove}
@@ -429,7 +444,9 @@ Do NOT use markdown code blocks for the video tag either.`;
           />
         </div>
 
-        <WorkspacePane />
+        <div className="hidden lg:flex lg:flex-col min-w-0">
+          <WorkspacePane />
+        </div>
       </div>
 
     </main>
