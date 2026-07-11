@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useChatStore } from "@/store/chatStore";
 import { useMemoryStore } from "@/store/memoryStore";
 import { useAgentStore } from "@/store/agentStore";
+import { motion } from "framer-motion";
 
 export default function ChatSidebar() {
   const {
@@ -24,26 +25,29 @@ export default function ChatSidebar() {
     <aside className="w-72 h-full border-r border-white/5 bg-black/40 backdrop-blur-xl flex flex-col shadow-2xl z-10">
       <div className="p-4 border-b border-white/5 space-y-3">
 
-        <button
+        <motion.button
+          whileTap={{ scale: 0.95 }}
           onClick={createChat}
-          className="w-full rounded-lg bg-white text-black py-2 font-medium hover:bg-zinc-200 transition"
+          className="w-full rounded-lg bg-white text-black py-2.5 font-bold shadow-[0_0_15px_rgba(255,255,255,0.2)] hover:bg-zinc-200 transition"
         >
           + New Chat
-        </button>
+        </motion.button>
 
-        <button
+        <motion.button
+          whileTap={{ scale: 0.95 }}
           onClick={() => setMemoryDialogOpen(true)}
-          className="w-full rounded-lg bg-zinc-800 text-white py-1.5 text-sm font-medium hover:bg-zinc-700 transition flex items-center justify-center gap-2"
+          className="w-full rounded-lg bg-black/40 border border-white/10 text-white py-2 text-sm font-medium shadow-md hover:bg-white/10 transition flex items-center justify-center gap-2"
         >
           Brain / Memory
-        </button>
+        </motion.button>
 
-        <button
+        <motion.button
+          whileTap={{ scale: 0.95 }}
           onClick={() => setAgentDialogOpen(true)}
-          className="w-full rounded-lg bg-zinc-800/50 text-zinc-300 py-1.5 text-sm font-medium border border-zinc-700 hover:bg-zinc-700 hover:text-white transition flex items-center justify-center gap-2"
+          className="w-full rounded-lg bg-transparent border border-white/5 text-zinc-400 py-2 text-sm font-medium hover:bg-white/5 hover:text-white transition flex items-center justify-center gap-2"
         >
           AI Personas
-        </button>
+        </motion.button>
       </div>
 
       <div className="flex-1 overflow-y-auto">

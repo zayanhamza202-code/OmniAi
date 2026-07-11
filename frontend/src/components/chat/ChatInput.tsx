@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -208,11 +209,15 @@ ${file.text}
         />
 
         {isStreaming ? (
-          <Button variant="destructive" onClick={onStop}>
-            Stop
-          </Button>
+          <motion.div whileTap={{ scale: 0.9 }}>
+            <Button variant="destructive" onClick={onStop}>
+              Stop
+            </Button>
+          </motion.div>
         ) : (
-          <Button onClick={handleSend}>Send</Button>
+          <motion.div whileTap={{ scale: 0.9 }}>
+            <Button onClick={handleSend}>Send</Button>
+          </motion.div>
         )}
       </div>
     </div>

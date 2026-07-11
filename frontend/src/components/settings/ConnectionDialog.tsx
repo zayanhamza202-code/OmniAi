@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
+import { motion, AnimatePresence } from "framer-motion";
 import api from "@/services/api";
 import { useConnectionStore } from "@/store/connectionStore";
 import { useAuthStore } from "@/store/authStore";
@@ -42,6 +43,7 @@ export default function ConnectionDialog() {
   const [loadingModels, setLoadingModels] = useState(false);
 
   const [search, setSearch] = useState("");
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   const filteredModels = useMemo(() => {
     return models.filter((m) =>
@@ -151,51 +153,74 @@ export default function ConnectionDialog() {
               <Button size="sm" variant="secondary" onClick={() => { setProviderName("DeepSeek"); setBaseUrl("https://api.deepseek.com/v1"); }}>
                 DeepSeek
               </Button>
+              {/* Hide the lesser known ones into a text list or smaller grid if needed, but they remain intact for now */}
             </div>
 
-            <Input
-              placeholder="Provider Name (Optional)"
-              value={providerName}
-              onChange={(e) =>
-                setProviderName(e.target.value)
-              }
-            />
+            <div className="pt-4 pb-2 border-t border-white/5 mt-4">
+              <button
+                type="button"
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                className="text-xs font-semibold text-zinc-400 hover:text-white transition flex items-center justify-between w-full"
+              >
+                Advanced Setup (Custom APIs)
+                <span>{showAdvanced ? "▲" : "▼"}</span>
+              </button>
+            </div>
+
+            <AnimatePresence>
+              {showAdvanced && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="space-y-4 overflow-hidden"
+                >
+                  <Input
+                    placeholder="Provider Name (Optional)"
+                    value={providerName}
+                    onChange={(e) =>
+                      setProviderName(e.target.value)
+                    }
+                  />
+
+                  <Input
+                    placeholder="Base URL"
+                    value={baseUrl}
+                    onChange={(e) =>
+                      setBaseUrl(e.target.value)
+                    }
+                  />
+
+                  <Input
+                    type="password"
+                    placeholder="API Key"
+                    value={apiKey}
+                    onChange={(e) =>
+                      setApiKey(e.target.value)
+                    }
+                  />
+
+                  <Input
+                    placeholder="Model ID (e.g., gpt-4o or gemini-pro)"
+                    value={model}
+                    onChange={(e) =>
+                      setModel(e.target.value)
+                    }
+                  />
+
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    className="w-full bg-zinc-800 text-white rounded-lg py-2 hover:bg-zinc-700 transition"
+                    onClick={handleFetchModels}
+                  >
+                    {loadingModels
+                      ? "Fetching Models..."
+                      : "Force Fetch Remote Models (Optional)"}
+                  </motion.button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-
-          <Input
-            placeholder="Base URL"
-            value={baseUrl}
-            onChange={(e) =>
-              setBaseUrl(e.target.value)
-            }
-          />
-
-          <Input
-            type="password"
-            placeholder="API Key"
-            value={apiKey}
-            onChange={(e) =>
-              setApiKey(e.target.value)
-            }
-          />
-
-          <Input
-            placeholder="Model ID (e.g., gpt-4o or gemini-pro)"
-            value={model}
-            onChange={(e) =>
-              setModel(e.target.value)
-            }
-          />
-
-          <Button
-            variant="outline"
-            disabled={loadingModels}
-            onClick={handleFetchModels}
-          >
-            {loadingModels
-              ? "Fetching..."
-              : "Fetch Models"}
-          </Button>
 
           {models.length > 0 && (
             <>
@@ -207,7 +232,7 @@ export default function ConnectionDialog() {
                 }
               />
 
-              <div className="h-72 overflow-y-auto rounded-lg border">
+              <div className="h-72 overflow-y-auto rounded-lg border border-white/10">
 
                 {filteredModels.map((m) => (
                   <button
@@ -216,19 +241,19 @@ export default function ConnectionDialog() {
                     onClick={() =>
                       setModel(m.id)
                     }
-                    className={`w-full border-b p-3 text-left hover:bg-zinc-800 ${model === m.id
+                    className={`w-full border-b border-white/10 p-3 text-left transition hover:bg-zinc-800 ${model === m.id
                       ? "bg-zinc-800"
-                      : ""
+                      : "bg-black/20"
                       }`}
                   >
                     <div className="flex items-center justify-between">
 
-                      <div className="font-medium">
+                      <div className="font-medium text-white">
                         {m.name}
                       </div>
 
                       {m.free && (
-                        <span className="rounded bg-green-600 px-2 py-1 text-xs">
+                        <span className="rounded bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 text-xs">
                           FREE
                         </span>
                       )}
@@ -251,12 +276,13 @@ export default function ConnectionDialog() {
             </>
           )}
 
-          <Button
-            className="w-full"
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            className="w-full bg-white text-black font-bold py-3 mt-4 rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:bg-zinc-200 transition"
             onClick={handleConnect}
           >
-            Connect
-          </Button>
+            Activate Engine
+          </motion.button>
 
         </div>
       </DialogContent>

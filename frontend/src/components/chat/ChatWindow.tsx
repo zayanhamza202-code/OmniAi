@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Copy, Check, Volume2, Square, Edit2, RotateCw, Download } from "lucide-react";
+import { motion } from "framer-motion";
 
 import MarkdownMessage from "./MarkdownMessage";
 import { useTTS } from "@/hooks/useTTS";
@@ -88,8 +89,11 @@ export default function ChatWindow({
         const isThisSpeaking = isSpeaking && speakingId === msgId;
 
         return (
-          <div
+          <motion.div
             key={index}
+            initial={{ opacity: 0, y: 15, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
             className={`group relative max-w-[85%] rounded-2xl p-5 shadow-lg backdrop-blur-md ${message.role === "user"
               ? "ml-auto bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-[0_4px_20px_rgba(99,102,241,0.25)] border border-indigo-400/30"
               : "bg-white/5 text-zinc-100 border border-white/10"
@@ -201,7 +205,7 @@ export default function ChatWindow({
               </div>
             )}
 
-          </div>
+          </motion.div>
         );
       })}
 
