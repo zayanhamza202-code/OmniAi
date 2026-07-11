@@ -40,6 +40,23 @@ export default function MarkdownMessage({ content }: Props) {
     );
   }
 
+  if (content.trim().startsWith("<audio ")) {
+    const srcMatch = content.match(/src="([^"]+)"/);
+    const audioSrc = srcMatch ? srcMatch[1] : "";
+    const remainingText = content.replace(/<audio[^>]*>|<\/audio>|<audio[^>]*\/>/g, "").trim();
+
+    return (
+      <div className="flex flex-col gap-3 my-2 w-full max-w-sm">
+        {remainingText && <div className="text-sm text-zinc-300">{remainingText}</div>}
+        {audioSrc && (
+          <div className="bg-zinc-900/80 p-3 rounded-xl border border-blue-500/20 shadow-[0_0_20px_rgba(59,130,246,0.15)] backdrop-blur-md">
+            <audio src={audioSrc} autoPlay controls className="w-full h-10 custom-audio-player" />
+          </div>
+        )}
+      </div>
+    );
+  }
+
   const CustomCodeComponent = ({ node, inline, className, children, ...props }: any) => {
     const match = /language-(\w+)/.exec(className || "");
     const language = match ? match[1] : "text";
