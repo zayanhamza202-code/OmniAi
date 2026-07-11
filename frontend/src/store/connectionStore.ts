@@ -14,7 +14,7 @@ interface ConnectionState {
   history: ConnectionConfig[];
 
   setDialogOpen: (open: boolean) => void;
-  connect: (config: ConnectionConfig) => void;
+  connect: (config: ConnectionConfig, saveToHistory?: boolean) => void;
   removeHistory: (index: number) => void;
 }
 
@@ -30,16 +30,15 @@ export const useConnectionStore = create<ConnectionState>()(
           isDialogOpen: open,
         }),
 
-      connect: (config) => {
+      connect: (config, saveToHistory = true) => {
         const currentHistory = get().history;
         const exists = currentHistory.some(
           (h) => h.baseUrl === config.baseUrl && h.apiKey === config.apiKey
         );
 
         let newHistory = currentHistory;
-        if (!exists && config.apiKey) {
-          // only save if it's somewhat custom and not our default Pollinations which has no key, or just save anyway?
-          // The user specifically wants to save OpenRouter etc, so saving unique baseUrl+apiKey combos is good.
+        if (!exists && config.apiKey && saveToHistory) {
+          // only save if it's somewhat custom and saveToHistory is true
           newHistory = [...currentHistory, config];
         }
 

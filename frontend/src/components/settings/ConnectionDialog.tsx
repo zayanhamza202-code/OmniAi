@@ -46,6 +46,7 @@ export default function ConnectionDialog() {
 
   const [search, setSearch] = useState("");
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [saveProfile, setSaveProfile] = useState(true);
 
   const filteredModels = useMemo(() => {
     return models.filter((m) =>
@@ -108,7 +109,7 @@ export default function ConnectionDialog() {
       baseUrl,
       apiKey,
       model,
-    });
+    }, saveProfile);
 
     toast.success("Provider connected.");
   }
@@ -155,7 +156,6 @@ export default function ConnectionDialog() {
               <Button size="sm" variant="secondary" onClick={() => { setProviderName("DeepSeek"); setBaseUrl("https://api.deepseek.com/v1"); }}>
                 DeepSeek
               </Button>
-              {/* Hide the lesser known ones into a text list or smaller grid if needed, but they remain intact for now */}
             </div>
 
             {history && history.length > 0 && (
@@ -204,6 +204,7 @@ export default function ConnectionDialog() {
                   className="space-y-4 overflow-hidden"
                 >
                   <Input
+                    autoComplete="new-password"
                     placeholder="Provider Name (Optional)"
                     value={providerName}
                     onChange={(e) =>
@@ -212,6 +213,7 @@ export default function ConnectionDialog() {
                   />
 
                   <Input
+                    autoComplete="new-password"
                     placeholder="Base URL"
                     value={baseUrl}
                     onChange={(e) =>
@@ -220,6 +222,7 @@ export default function ConnectionDialog() {
                   />
 
                   <Input
+                    autoComplete="new-password"
                     type="password"
                     placeholder="API Key"
                     value={apiKey}
@@ -229,6 +232,7 @@ export default function ConnectionDialog() {
                   />
 
                   <Input
+                    autoComplete="new-password"
                     placeholder="Model ID (e.g., gpt-4o or gemini-pro)"
                     value={model}
                     onChange={(e) =>
@@ -253,6 +257,7 @@ export default function ConnectionDialog() {
           {models.length > 0 && (
             <>
               <Input
+                autoComplete="new-password"
                 placeholder="Search model..."
                 value={search}
                 onChange={(e) =>
@@ -304,12 +309,25 @@ export default function ConnectionDialog() {
             </>
           )}
 
+          <div className="flex items-center gap-2 pt-2">
+            <input
+              type="checkbox"
+              id="saveProfile"
+              checked={saveProfile}
+              onChange={(e) => setSaveProfile(e.target.checked)}
+              className="rounded border-zinc-700 bg-zinc-900 text-blue-600 focus:ring-blue-500 w-4 h-4"
+            />
+            <label htmlFor="saveProfile" className="text-sm text-zinc-300 font-medium select-none cursor-pointer">
+              Save this provider config to History
+            </label>
+          </div>
+
           <motion.button
             whileTap={{ scale: 0.95 }}
             className="w-full bg-white text-black font-bold py-3 mt-4 rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:bg-zinc-200 transition"
             onClick={handleConnect}
           >
-            Activate Engine
+            {saveProfile ? "Save Profile & Connect" : "Connect"}
           </motion.button>
 
         </div>

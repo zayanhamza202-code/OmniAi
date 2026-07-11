@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useChatStore } from "@/store/chatStore";
 import { useMemoryStore } from "@/store/memoryStore";
 import { useAgentStore } from "@/store/agentStore";
+import { useAuthStore } from "@/store/authStore";
 import { motion } from "framer-motion";
 
 export default function ChatSidebar() {
@@ -20,6 +21,7 @@ export default function ChatSidebar() {
   const [title, setTitle] = useState("");
   const { setMemoryDialogOpen } = useMemoryStore();
   const { setAgentDialogOpen } = useAgentStore();
+  const { logout, username } = useAuthStore();
 
   return (
     <aside className="w-72 h-full border-r border-white/5 bg-black/40 backdrop-blur-xl flex flex-col shadow-2xl z-10">
@@ -122,6 +124,19 @@ export default function ChatSidebar() {
 
         ))}
 
+      </div>
+
+      <div className="p-4 border-t border-white/5 space-y-2">
+        <div className="text-xs text-zinc-500 text-center mb-2 truncate">
+          Logged in as <b>{username}</b>
+        </div>
+        <motion.button
+          whileTap={{ scale: 0.95 }}
+          onClick={logout}
+          className="w-full rounded-lg bg-red-600/10 border border-red-500/20 text-red-400 py-2.5 text-sm font-semibold hover:bg-red-500 hover:text-white transition"
+        >
+          Logout
+        </motion.button>
       </div>
 
     </aside>
