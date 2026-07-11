@@ -30,6 +30,8 @@ export default function ConnectionDialog() {
     isDialogOpen,
     setDialogOpen,
     connect,
+    history,
+    removeHistory,
   } = useConnectionStore();
   const { token } = useAuthStore();
 
@@ -155,6 +157,32 @@ export default function ConnectionDialog() {
               </Button>
               {/* Hide the lesser known ones into a text list or smaller grid if needed, but they remain intact for now */}
             </div>
+
+            {history && history.length > 0 && (
+              <div className="pt-2 border-t border-white/5 mt-2">
+                <h3 className="text-sm font-semibold mb-2 text-blue-400">Your Saved Engines:</h3>
+                <div className="flex gap-2 flex-col max-h-40 overflow-y-auto pr-2">
+                  {history.map((h, i) => (
+                    <div key={i} className="flex gap-2 items-center bg-zinc-800/50 p-2 rounded-lg border border-zinc-700 hover:bg-zinc-800 transition">
+                      <button
+                        className="flex-1 text-left text-sm"
+                        onClick={() => {
+                          setProviderName(h.providerName || "Custom");
+                          setBaseUrl(h.baseUrl);
+                          setApiKey(h.apiKey);
+                          if (h.model) setModel(h.model);
+                          setShowAdvanced(true);
+                        }}
+                      >
+                        <div className="text-white font-medium">{h.providerName || "Custom Provider"}</div>
+                        <div className="text-zinc-500 text-xs truncate max-w-[200px]">{h.baseUrl}</div>
+                      </button>
+                      <button onClick={() => removeHistory(i)} className="text-red-400 hover:text-red-300 p-2">✕</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="pt-4 pb-2 border-t border-white/5 mt-4">
               <button
