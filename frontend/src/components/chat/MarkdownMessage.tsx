@@ -59,6 +59,19 @@ export default function MarkdownMessage({ content }: Props) {
     );
   };
 
+  const CustomImageComponent = ({ src, alt, ...props }: any) => {
+    return (
+      <div className="my-4 flex justify-center">
+        <img
+          src={src}
+          alt={alt || "Generated Output"}
+          className="rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.1)] border border-white/10 max-h-[400px] w-auto object-contain"
+          {...props}
+        />
+      </div>
+    );
+  };
+
   return (
     <div className="prose prose-invert max-w-none break-words">
       <ReactMarkdown
@@ -66,6 +79,7 @@ export default function MarkdownMessage({ content }: Props) {
         rehypePlugins={[rehypeHighlight, rehypeRaw]}
         components={{
           code: CustomCodeComponent,
+          img: CustomImageComponent,
         }}
       >
         {content}

@@ -36,6 +36,7 @@ export default function Home() {
     addMessage,
     updateLastAssistantMessage,
     truncateMessages,
+    renameChat,
   } = useChatStore();
 
   const { token, logout, username } = useAuthStore();
@@ -178,6 +179,41 @@ export default function Home() {
         content: msg.content,
       };
     });
+
+    const isFirstMessage = (currentChat?.messages ?? []).length === 0;
+    if (isFirstMessage && currentChat) {
+      const chatId = currentChat.id;
+      // Fire and forget auto-namer via Free Pollinations
+      fetch("https://text.pollinations.ai/openai/chat/completions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "openai",
+          messages: [{ role: "user", content: `Summarize this text into a very short 2 to 4 word conversational title: "${message.substring(0, 100)}". Do not use quotes, punctuation, or any extra padding, just the title.` }]
+        })
+      })
+        .then(r => r.json())
+        .then(data => {
+          const title = data.choices?.[0]?.message?.content?.trim();
+          if (title) renameChat(chatId, title.replace(/["']/g, ''));
+        })
+        .catch(e => console.error("Auto rename failed:", e));
+    }
+
+    const msgLower = message.trim().toLowerCase();
+    if (msgLower.startsWith("/imagine ") || msgLower.startsWith("draw ")) {
+      const promptText = message.replace(/^\/imagine\s+/i, "").replace(/^draw\s+/i, "").trim();
+      const encoded = encodeURIComponent(promptText);
+      const imageUrl = `https://image.pollinations.ai/prompt/${encoded}?nologo=true&enhance=true`;
+
+      addMessage({
+        role: "assistant",
+        content: `🎨 **Vision rendered:**\n\n![Generated Image](${imageUrl})`
+      });
+
+      clear();
+      return;
+    }
 
     history.push({
       role: "user",
