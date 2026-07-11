@@ -15,14 +15,16 @@ interface Message {
 
 interface ChatWindowProps {
   messages: Message[];
-  onEdit?: (index: number, newContent: string) => void;
+  onEdit?: (index: number, content: string) => void;
   onRegenerate?: (index: number) => void;
+  onPromptSelect?: (prompt: string) => void;
 }
 
 export default function ChatWindow({
   messages,
   onEdit,
   onRegenerate,
+  onPromptSelect,
 }: ChatWindowProps) {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editContent, setEditContent] = useState("");
@@ -73,15 +75,50 @@ export default function ChatWindow({
   }
 
   return (
-    <div className="flex-1 overflow-y-auto p-6 space-y-4 relative pt-12">
+    <div className="flex-1 overflow-y-auto p-6 space-y-4 relative pt-16">
       {messages.length > 0 && (
         <button
           onClick={downloadChat}
-          className="absolute top-4 right-6 flex items-center gap-2 px-3 py-1.5 text-xs text-zinc-400 hover:text-white bg-zinc-800 hover:bg-zinc-700 rounded-lg transition"
+          className="absolute top-4 right-14 flex items-center gap-2 px-3 py-1.5 text-xs text-zinc-400 hover:text-white bg-black/40 border border-white/10 hover:bg-black/60 rounded-lg transition z-20 backdrop-blur"
           title="Export Conversation as Markdown"
         >
           <Download size={14} /> Export Chat
         </button>
+      )}
+
+      {messages.length === 0 && (
+        <div className="flex flex-col items-center justify-center h-[70%] space-y-8 animate-in fade-in duration-700">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-20 h-20 bg-gradient-to-tr from-blue-500 to-purple-600 rounded-3xl shadow-[0_0_40px_rgba(139,92,246,0.4)] flex items-center justify-center">
+              <span className="text-4xl text-white font-black">O</span>
+            </div>
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">
+              Welcome to OmniAI
+            </h1>
+            <p className="text-zinc-400 text-sm max-w-sm text-center">
+              Your unlimited, universal AI workspace. Select an engine from Settings or click a prompt below to ignite the spark.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl px-4">
+            {[
+              "Draft an email to my boss asking for a raise.",
+              "Explain quantum computing to a 5-year-old.",
+              "Write a Python script to scrape a website.",
+              "Analyze a high-level UI/UX architecture."
+            ].map((prompt, i) => (
+              <motion.button
+                key={i}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => onPromptSelect && onPromptSelect(prompt)}
+                className="bg-white/5 border border-white/10 hover:bg-white/10 p-4 rounded-xl text-left text-sm text-zinc-300 transition-colors shadow-lg"
+              >
+                {prompt}
+              </motion.button>
+            ))}
+          </div>
+        </div>
       )}
 
       {messages.map((message, index) => {

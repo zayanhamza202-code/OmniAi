@@ -430,6 +430,7 @@ Do NOT use markdown code blocks for the video tag either.`;
             }
             onEdit={handleEdit}
             onRegenerate={handleRegenerate}
+            onPromptSelect={handleSend}
           />
 
           <ChatInput
