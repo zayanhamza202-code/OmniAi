@@ -25,6 +25,21 @@ const extractText = (node: any): string => {
 export default function MarkdownMessage({ content }: Props) {
   const { openWorkspace } = useWorkspaceStore();
 
+  if (content.trim().toLowerCase().startsWith("<!doctype html>")) {
+    return (
+      <div className="w-full flex flex-col gap-2 my-2">
+        <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono rounded-t-xl w-fit">
+          <span>🚀 Live Mini-App Engine (/build hack)</span>
+        </div>
+        <iframe
+          srcDoc={content}
+          className="w-full h-[500px] border border-white/10 rounded-b-xl rounded-tr-xl bg-white shadow-[0_0_40px_rgba(255,255,255,0.05)]"
+          sandbox="allow-scripts allow-modals allow-forms allow-same-origin"
+        />
+      </div>
+    );
+  }
+
   const CustomCodeComponent = ({ node, inline, className, children, ...props }: any) => {
     const match = /language-(\w+)/.exec(className || "");
     const language = match ? match[1] : "text";
